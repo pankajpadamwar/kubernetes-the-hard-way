@@ -21,6 +21,8 @@ This does the below:
     > This is the default settings. This can be changed at the top of the Vagrant file
 
 - Set's IP addresses in the range 192.168.5
+- You can check the IPS with below command
+  ip addr show enp0s8 | grep "inet " | awk '{print $2}' | cut -d / -f 1
 
     | VM           |  VM Name               | Purpose       | IP           | Forwarded Port   |
     | ------------ | ---------------------- |:-------------:| ------------:| ----------------:|
