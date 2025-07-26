@@ -54,6 +54,13 @@ The instance internal IP address will be used to serve client requests and commu
 ```
 INTERNAL_IP=$(ip addr show enp0s8 | grep "inet " | awk '{print $2}' | cut -d / -f 1)
 ```
+Controlplane01
+<img width="919" height="126" alt="image" src="https://github.com/user-attachments/assets/8a514545-77f1-4818-bb49-6af1abf239fd" />
+
+Controlplane02
+<img width="931" height="129" alt="image" src="https://github.com/user-attachments/assets/d5bc2df2-edff-44ef-80cf-fec13e4d713f" />
+
+
 
 Each etcd member must have a unique name within an etcd cluster. Set the etcd name to match the hostname of the current compute instance:
 
@@ -85,7 +92,7 @@ ExecStart=/usr/local/bin/etcd \\
   --listen-client-urls https://${INTERNAL_IP}:2379,https://127.0.0.1:2379 \\
   --advertise-client-urls https://${INTERNAL_IP}:2379 \\
   --initial-cluster-token etcd-cluster-0 \\
-  --initial-cluster master-1=https://192.168.5.11:2380,master-2=https://192.168.5.12:2380 \\
+  --initial-cluster controlplane01=https://192.168.56.11:2380,controlplane02=https://192.168.56.12:2380 \\
   --initial-cluster-state new \\
   --data-dir=/var/lib/etcd
 Restart=on-failure
@@ -108,8 +115,16 @@ EOF
 
 > Remember to run the above commands on each controller node: `master-1`, and `master-2`.
 
-## Verification
+Controlplan01 --
 
+<img width="943" height="226" alt="image" src="https://github.com/user-attachments/assets/c4a0a0d2-0637-442a-8179-94dca2cd31e8" />
+
+Controlplan02 --
+<img width="940" height="160" alt="image" src="https://github.com/user-attachments/assets/4a965bbc-2d96-411a-8ede-c8d5105425c8" />
+
+
+## Verification
+Ust the ETCD control tool to verify the cluster 
 List the etcd cluster members:
 
 ```
