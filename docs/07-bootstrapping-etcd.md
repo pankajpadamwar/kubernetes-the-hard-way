@@ -1,3 +1,13 @@
+### Here is the plan for the installation 
+
+1) We will start from installing the ETCD
+2) Then we will deploy the Control Plan components like API Server , Controller Manager , Scheduler 
+3) After that we will configure the Load balancer with HAPRoxy 
+
+<img width="1884" height="1002" alt="image" src="https://github.com/user-attachments/assets/45f8fe17-4afd-4d0e-91b0-42a8d71d8f51" />
+
+
+
 # Bootstrapping the etcd Cluster
 
 Kubernetes components are stateless and store cluster state in [etcd](https://github.com/coreos/etcd). In this lab you will bootstrap a three node etcd cluster and configure it for high availability and secure remote access.
