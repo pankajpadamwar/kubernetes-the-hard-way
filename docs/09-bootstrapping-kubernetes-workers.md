@@ -51,7 +51,7 @@ When generating kubeconfig files for Kubelets the client certificate matching th
 
 Get the kub-api server load-balancer IP.
 ```
-LOADBALANCER_ADDRESS=192.168.5.30
+LOADBALANCER_ADDRESS=192.168.56.30
 ```
 
 Generate a kubeconfig file for the first worker node:
@@ -62,9 +62,9 @@ Generate a kubeconfig file for the first worker node:
     --certificate-authority=ca.crt \
     --embed-certs=true \
     --server=https://${LOADBALANCER_ADDRESS}:6443 \
-    --kubeconfig=worker-1.kubeconfig
+    --kubeconfig=node01.kubeconfig
 
-  kubectl config set-credentials system:node:worker-1 \
+  kubectl config set-credentials system:node:node01 \
     --client-certificate=node01.crt \
     --client-key=node01.key \
     --embed-certs=true \
