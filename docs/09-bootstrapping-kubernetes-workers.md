@@ -19,7 +19,7 @@ Generate a certificate and private key for one worker node:
 Worker1:
 
 ```
-master-1$ cat > openssl-worker-1.cnf <<EOF
+master-1$ cat > openssl-node01.cnf <<EOF
 [req]
 req_extensions = v3_req
 distinguished_name = req_distinguished_name
@@ -29,20 +29,20 @@ basicConstraints = CA:FALSE
 keyUsage = nonRepudiation, digitalSignature, keyEncipherment
 subjectAltName = @alt_names
 [alt_names]
-DNS.1 = worker-1
-IP.1 = 192.168.5.21
+DNS.1 = node01
+IP.1 = 192.168.56.21
 EOF
 
-openssl genrsa -out worker-1.key 2048
-openssl req -new -key worker-1.key -subj "/CN=system:node:worker-1/O=system:nodes" -out worker-1.csr -config openssl-worker-1.cnf
-openssl x509 -req -in worker-1.csr -CA ca.crt -CAkey ca.key -CAcreateserial  -out worker-1.crt -extensions v3_req -extfile openssl-worker-1.cnf -days 1000
+openssl genrsa -out node01.key 2048
+openssl req -new -key node01.key -subj "/CN=system:node:node01/O=system:nodes" -out node01.csr -config openssl-node01.cnf
+openssl x509 -req -in node01.csr -CA ca.crt -CAkey ca.key -CAcreateserial  -out node01.crt -extensions v3_req -extfile openssl-node01.cnf -days 10000
 ```
 
 Results:
 
 ```
-worker-1.key
-worker-1.crt
+node01.key
+node01.crt
 ```
 
 ### The kubelet Kubernetes Configuration File
@@ -65,17 +65,17 @@ Generate a kubeconfig file for the first worker node:
     --kubeconfig=worker-1.kubeconfig
 
   kubectl config set-credentials system:node:worker-1 \
-    --client-certificate=worker-1.crt \
-    --client-key=worker-1.key \
+    --client-certificate=node01.crt \
+    --client-key=node01.key \
     --embed-certs=true \
-    --kubeconfig=worker-1.kubeconfig
+    --kubeconfig=node01.kubeconfig
 
   kubectl config set-context default \
     --cluster=kubernetes-the-hard-way \
-    --user=system:node:worker-1 \
-    --kubeconfig=worker-1.kubeconfig
+    --user=system:node:node01 \
+    --kubeconfig=node01.kubeconfig
 
-  kubectl config use-context default --kubeconfig=worker-1.kubeconfig
+  kubectl config use-context default --kubeconfig=node01.kubeconfig
 }
 ```
 
