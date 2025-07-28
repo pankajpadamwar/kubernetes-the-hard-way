@@ -255,4 +255,64 @@ worker-1   NotReady   <none>   93s   v1.13.0
 > Note: It is OK for the worker node to be in a NotReady state.
   That is because we haven't configured Networking yet.
 
+
+## In case node is not up check if Kubelet servive is running 
+Steps - 
+https://chatgpt.com/share/68873999-8404-8008-9578-91b433aec176
+
+1) Option 1: Run with full config (temporary manual test)
+bash
+Copy
+Edit
+sudo /usr/local/bin/kubelet \
+  --config=/var/lib/kubelet/kubelet-config.yaml \
+  --kubeconfig=/var/lib/kubelet/kubeconfig \
+  --tls-cert-file=/var/lib/kubelet/node01.crt \
+  --tls-private-key-file=/var/lib/kubelet/node01.key \
+  --network-plugin=cni \
+  --register-node=true \
+  --v=2
+
+2) we are getting this error
+
+F0728 08:39:13.938630   34296 server.go:261] failed to run Kubelet: mountpoint for cpu not found
+
+3) vagrant@node01:~$ ls -lrt /sys/fs/cgroup/cpu/
+ls: cannot access '/sys/fs/cgroup/cpu/': No such file or directory
+vagrant@node01:~$ mount | grep cgroup
+cgroup2 on /sys/fs/cgroup type cgroup2 (rw,nosuid,nodev,noexec,relatime,nsdelegate,memory_recursiveprot)
+
+➤ Step-by-step:
+Edit GRUB:
+
+
+sudo nano /etc/default/grub
+Update this line:
+
+GRUB_CMDLINE_LINUX=""
+Change it to:
+
+
+GRUB_CMDLINE_LINUX="systemd.unified_cgroup_hierarchy=0"
+
+Update GRUB:
+
+
+sudo update-grub
+
+Reboot
+
+
+sudo reboot
+Verify after reboot:
+
+
+mount | grep cgroup
+You should now see separate lines for:
+
+
+cgroup on /sys/fs/cgroup/cpu ...
+cgroup on /sys/fs/cgroup/memory ...
+
+
 Next: [TLS Bootstrapping Kubernetes Workers](10-tls-bootstrapping-kubernetes-workers.md)
