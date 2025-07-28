@@ -93,7 +93,7 @@ master-1$ scp ca.crt worker-1.crt worker-1.key worker-1.kubeconfig worker-1:~/
 
 ### Download and Install Worker Binaries
 
-Going forward all activities are to be done on the `worker-1` node.
+Going forward all activities are to be done on the `node01` node.
 
 ```
 worker-1$ wget -q --show-progress --https-only --timestamping \
@@ -105,7 +105,7 @@ worker-1$ wget -q --show-progress --https-only --timestamping \
 Create the installation directories:
 
 ```
-worker-1$ sudo mkdir -p \
+node01$ sudo mkdir -p \
   /etc/cni/net.d \
   /opt/cni/bin \
   /var/lib/kubelet \
