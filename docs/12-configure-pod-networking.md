@@ -18,7 +18,9 @@ Deploy weave network. Run only once on the `master` node.
 
 
 `kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"`
+
 or 
+
 `kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s-1.11.yaml`
 
 Weave uses POD CIDR of `10.32.0.0/12` by default.
