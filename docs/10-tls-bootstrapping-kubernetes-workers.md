@@ -40,7 +40,7 @@ So let's get started!
 Copy the ca certificate to the worker node:
 
 ```
-scp ca.crt worker-2:~/
+scp ca.crt node02:~/
 ```
 
 ## Step 1 Configure the Binaries on the Worker node
@@ -85,6 +85,8 @@ For the workers(kubelet) to access the Certificates API, they need to authentica
 Bootstrap Tokens take the form of a 6 character token id followed by 16 character token secret separated by a dot. Eg: abcdef.0123456789abcdef. More formally, they must match the regular expression [a-z0-9]{6}\.[a-z0-9]{16}
 
 Bootstrap Tokens are created as a secret in the kube-system namespace.
+
+This need to be doen in controlplan01
 
 ```
 cat > bootstrap-token-07401b.yaml <<EOF
@@ -217,10 +219,10 @@ kubectl create -f auto-approve-renewals-for-nodes.yaml
 
 It is now time to configure the second worker to TLS bootstrap using the token we generated
 
-For worker-1 we started by creating a kubeconfig file with the TLS certificates that we manually generated.
+For node01 we started by creating a kubeconfig file with the TLS certificates that we manually generated.
 Here, we don't have the certificates yet. So we cannot create a kubeconfig file. Instead we create a bootstrap-kubeconfig file with information about the token we created.
 
-This is to be done on the `worker-2` node.
+This is to be done on the `node02` node.
 
 ```
 sudo kubectl config --kubeconfig=/var/lib/kubelet/bootstrap-kubeconfig set-cluster bootstrap --server='https://192.168.5.30:6443' --certificate-authority=/var/lib/kubernetes/ca.crt
